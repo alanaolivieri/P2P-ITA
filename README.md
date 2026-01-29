@@ -2,7 +2,7 @@
 
 Este proyecto muestra de forma clara y actualizada **quién está habilitado para realizar el P2P** dentro del itinerario de **Data Analytics – IT Academy**.
 
-La información se obtiene a partir de los archivos corporativos de calificaciones y se presenta mediante una **aplicación Streamlit** de solo lectura que se actualiza automáticamente de forma diaria a final de la tarde.
+La información se obtiene a partir de los archivos corporativos de calificaciones y se presenta mediante una **[aplicación Streamlit](https://p2p-ita-dataanalytics.streamlit.app/)** de solo lectura que se actualiza automáticamente de forma diaria a final de la tarde.
 
 ---
 
