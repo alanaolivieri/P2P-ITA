@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 st.set_page_config(
-    page_title = "P2P - Habilitados",
+    page_title = "Revisiones P2P",
     layout = "wide"
 )
 
@@ -19,7 +19,7 @@ st.title("📊 Estado para revisiones P2P")
 
 st.info(
     "**Solo las personas marcadas con ✅ pueden realizar el P2P.**\n\n"
-    "Si no estás habilitado/a, pero sabes que tienes aprobado el sprint contacta con tu mentor."
+    "Si no estás habilitado/a, pero sabes que tienes aprobado el sprint, contacta con tu mentor."
 )
 
 st.sidebar.header("🔎 Filtros")
@@ -42,6 +42,5 @@ st.dataframe(
     use_container_width=True,
     hide_index=True
 )
-
 
 st.caption("IT Academy · Sistema de revisión P2P")
