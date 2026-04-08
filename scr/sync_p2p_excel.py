@@ -9,7 +9,7 @@ ORIGEN = os.getenv("ORIGEN")
 REPO = os.getenv("REPO")
 DESTINO = os.path.join(REPO, "p2p_latest.xlsx")
 
-df = pd.read_excel(ORIGEN)
+df = pd.read_excel(ORIGEN, sheet_name="Data 2026")
 df.fillna('', inplace=True)
 df.drop('Count', axis = 1, inplace=True)
 df.to_excel(DESTINO, index=False)
