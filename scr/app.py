@@ -13,7 +13,7 @@ st.set_page_config(
 BASE_DIR = Path(__file__).resolve().parent
 DATA_PATH = BASE_DIR.parent / "data" / "p2p_latest.xlsx"
 
-df = pd.read_excel(DATA_PATH, sheet_name="Data 2026")
+df = pd.read_excel(DATA_PATH)
 
 st.title("📊 Estado para revisiones P2P")
 
