@@ -1,14 +1,15 @@
-# P2P-ITA
+# P2P and Activities ITA
 
-Este proyecto muestra de forma clara y actualizada **quién está habilitado para realizar el P2P** dentro del itinerario de **Data Analytics – IT Academy**.
+Este proyecto muestra de forma clara y actualizada **quién está habilitado para realizar el P2P** dentro del itinerario de **Data Analytics – IT Academy** y la **Organización de las Actividades** que se realizarán en las aulas a 30 días.
 
-La información se obtiene a partir de los archivos corporativos de calificaciones y se presenta mediante una **[aplicación Streamlit](https://p2p-ita-dataanalytics.streamlit.app/)** de solo lectura que se actualiza automáticamente de forma diaria a final de la tarde.
+La información se obtiene a partir de los archivos corporativos de calificaciones y se presenta mediante una **[aplicación Streamlit](https://p2p-ita-dataanalytics.streamlit.app/)** de solo lectura que se actualiza automáticamente de forma diaria a inicio de la mañana.
 
 ---
 
 ## Objetivos
 
 - Mostrar el **estado de habilitación P2P** de estudiantes y mentores
+- Dar a conocer las actividades planteadas en las aulas
 - Garantizar que la información esté **siempre actualizada**
 - Cumplir con las **restricciones de seguridad corporativas**
 - Ofrecer una visualización clara, filtrable y ordenable
@@ -24,6 +25,7 @@ P2P-ITA/
 ├── .gitignore               # Exclusión de archivos sensibles
 │
 ├── data/
+|   ├── actividades.xlsx     # Excel generado automáticamente (lectura)
 │   └── p2p_latest.xlsx      # Excel generado automáticamente (lectura)
 │
 ├── src/
@@ -38,9 +40,9 @@ P2P-ITA/
 
 En el .env deben existir las siguientes variables
 
-`ORIGEN`: es el path donde se encuentra el archivo origen que consume los datos
-
-`REPO`: es el path donde se crea el excel dentro de la carpeta data de este repositorio
+`ORIGEN`: es el path donde se encuentra el archivo origen que consume los datos del p2p
+`ORGANIZACION`: es el path donde se encuentra el archivo origen que consume los datos para las actividades
+`REPO`: es el path donde se crean los excel dentro de la carpeta data de este repositorio
 
 ### Sincronización
 
@@ -65,7 +67,8 @@ sync_env\Scripts\python.exe -m pip install -r requirements_sync.txt
 
 Crear un archivo .env en la misma carpeta que el script:
 ```env
-ORIGEN="C:/ruta/al/excel/original.xlsx"
+ORIGEN="C:/ruta/al/excel/original/datos/p2p.xlsx"
+ORGANIZACION="C:/ruta/al/excel/original/datos/organizacion.xlsx
 REPO="C:/ruta/al/repositorio/P2P-ITA"
 ```
 - Ejecutar la sincronización manualmente
