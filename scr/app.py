@@ -55,7 +55,7 @@ if vista == "P2P":
 else:
     st.title("🗓️ Organización de actividades")
 
-    df_org = pd.read_excel(ORG_PATH, sheet_name="Organización")
+    df_org = pd.read_excel(ORG_PATH)
 
     if "Comentario" in df_org.columns:
         df_org = df_org.drop(columns=["Comentario"])
