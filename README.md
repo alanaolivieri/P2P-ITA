@@ -26,6 +26,7 @@ P2P-ITA/
 │
 ├── data/
 |   ├── actividades.xlsx     # Excel generado automáticamente (lectura)
+|   ├── infografia.jpg       # Imagen generada automáticamente (lectura)
 │   └── p2p_latest.xlsx      # Excel generado automáticamente (lectura)
 │
 ├── src/
@@ -42,6 +43,7 @@ En el .env deben existir las siguientes variables
 
 `ORIGEN`: es el path donde se encuentra el archivo origen que consume los datos del p2p
 `ORGANIZACION`: es el path donde se encuentra el archivo origen que consume los datos para las actividades
+`INFOGRAFIA`: es el path donde se encuentra la imagen de origen que muestra la organización y rotación
 `REPO`: es el path donde se crean los excel dentro de la carpeta data de este repositorio
 
 ### Sincronización
@@ -68,7 +70,8 @@ sync_env\Scripts\python.exe -m pip install -r requirements_sync.txt
 Crear un archivo .env en la misma carpeta que el script:
 ```env
 ORIGEN="C:/ruta/al/excel/original/datos/p2p.xlsx"
-ORGANIZACION="C:/ruta/al/excel/original/datos/organizacion.xlsx
+ORGANIZACION="C:/ruta/al/excel/original/datos/organizacion.xlsx"
+INFOGRAFIA="C:/ruta/a/imagen/original/infografia.jpg"
 REPO="C:/ruta/al/repositorio/P2P-ITA"
 ```
 - Ejecutar la sincronización manualmente
