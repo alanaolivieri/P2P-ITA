@@ -57,84 +57,81 @@ if vista == "P2P":
     st.caption("IT Academy · Sistema de revisión P2P")
 
 else:
-    st.title("🗓️ Organización de actividades")
-    if INFOGRAFIA_PATH.exists():
-        col1, col2 = st.columns([1, 5])
+    if st.session_state.mostrar_infografia:
+        st.image(str(INFOGRAFIA_PATH), use_container_width=True)
 
-        with col1:
+        if st.button("Cerrar imagen"):
+            st.session_state.mostrar_infografia = False
+            st.rerun()
+
+    else:
+        st.title("🗓️ Organización de actividades")
+
+        if INFOGRAFIA_PATH.exists():
             st.image(str(INFOGRAFIA_PATH), width=180)
 
             if st.button("Ampliar imagen"):
                 st.session_state.mostrar_infografia = True
-
-        if st.session_state.mostrar_infografia:
-            st.divider()
-            st.subheader("Infografía ampliada")
-
-            st.image(str(INFOGRAFIA_PATH), use_container_width=True)
-
-            if st.button("Cerrar imagen"):
-                st.session_state.mostrar_infografia = False
                 st.rerun()
-    else:
-        st.warning("No se encontró la infografía.")
+        else:
+            st.warning("No se encontró la infografía.")
 
-    df_org = pd.read_excel(ORG_PATH)
+        df_org = pd.read_excel(ORG_PATH)
 
-    if "Comentari" in df_org.columns:
-        df_org = df_org.drop(columns=["Comentari"])
+        if "Comentari" in df_org.columns:
+            df_org = df_org.drop(columns=["Comentari"])
 
-    if "Data" in df_org.columns:
-        df_org["Data"] = pd.to_datetime(df_org["Data"], errors="coerce").dt.normalize()
+        if "Data" in df_org.columns:
+            df_org["Data"] = pd.to_datetime(df_org["Data"], errors="coerce").dt.normalize()
 
-        hoy = datetime.date.today()
-        fin_30 = hoy + datetime.timedelta(days=30)
+            hoy = datetime.date.today()
+            fin_30 = hoy + datetime.timedelta(days=30)
 
-        min_fecha = df_org["Data"].min().date()
-        max_fecha = df_org["Data"].max().date()
+            min_fecha = df_org["Data"].min().date()
+            max_fecha = df_org["Data"].max().date()
 
-        valor_inicio = max(hoy, min_fecha)
-        valor_fin = min(fin_30, max_fecha)
+            valor_inicio = max(hoy, min_fecha)
+            valor_fin = min(fin_30, max_fecha)
 
-        rango_fechas = st.sidebar.date_input(
-            "Filtrar por fecha",
-            value=(valor_inicio, valor_fin),
-            min_value=min_fecha,
-            max_value=max_fecha
+            rango_fechas = st.sidebar.date_input(
+                "Filtrar por fecha",
+                value=(valor_inicio, valor_fin),
+                min_value=min_fecha,
+                max_value=max_fecha
+            )
+
+            if len(rango_fechas) == 2:
+                inicio, fin = rango_fechas
+            else:
+                inicio, fin = valor_inicio, valor_fin
+
+            df_org = df_org[
+                df_org["Data"].between(pd.Timestamp(inicio), pd.Timestamp(fin))
+            ]
+
+            df_org["Data"] = df_org["Data"].dt.strftime("%d-%m")
+
+        if "Session" in df_org.columns:
+            df_org["Session"] = df_org["Session"].astype(str).str.replace("\n", "<br>", regex=False)
+
+        html = df_org.to_html(index=False, escape=False, justify="center")
+
+        st.markdown(
+            """
+            <style>
+            table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+            th {
+                text-align: center !important;
+            }
+            td {
+                vertical-align: top;
+            }
+            </style>
+            """,
+            unsafe_allow_html=True
         )
 
-        if len(rango_fechas) == 2:
-            inicio, fin = rango_fechas
-        else:
-            inicio, fin = valor_inicio, valor_fin
-
-        df_org = df_org[
-            df_org["Data"].between(pd.Timestamp(inicio), pd.Timestamp(fin))
-        ]
-
-        df_org["Data"] = df_org["Data"].dt.strftime("%d-%m")
-
-    if "Session" in df_org.columns:
-        df_org["Session"] = df_org["Session"].astype(str).str.replace("\n", "<br>", regex=False)
-
-    html = df_org.to_html(index=False, escape=False, justify="center")
-
-    st.markdown(
-        """
-        <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th {
-            text-align: center !important;
-        }
-        td {
-            vertical-align: top;
-        }
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
-
-    st.markdown(html, unsafe_allow_html=True)
+        st.markdown(html, unsafe_allow_html=True)
