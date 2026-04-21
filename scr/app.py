@@ -14,6 +14,7 @@ st.set_page_config(
 BASE_DIR = Path(__file__).resolve().parent
 DATA_PATH = BASE_DIR.parent / "data" / "p2p_latest.xlsx"
 ORG_PATH = BASE_DIR.parent / "data" / "actividades.xlsx"
+INFOGRAFIA_PATH = BASE_DIR.parent / "data" / "infografia.jpg"
 
 
 st.sidebar.header("📌 Navegación")
@@ -54,11 +55,16 @@ if vista == "P2P":
 
 else:
     st.title("🗓️ Organización de actividades")
+    st.image(
+        str(INFOGRAFIA_PATH),
+        caption="Haz click en la imagen para ampliarla",
+        width=250
+    )
 
     df_org = pd.read_excel(ORG_PATH)
 
-    if "Comentario" in df_org.columns:
-        df_org = df_org.drop(columns=["Comentario"])
+    if "Comentari" in df_org.columns:
+        df_org = df_org.drop(columns=["Comentari"])
 
     if "Data" in df_org.columns:
         df_org["Data"] = pd.to_datetime(df_org["Data"], errors="coerce").dt.normalize()
@@ -90,8 +96,8 @@ else:
 
         df_org["Data"] = df_org["Data"].dt.strftime("%d-%m")
 
-    if "Sesión" in df_org.columns:
-        df_org["Sesión"] = df_org["Sesión"].astype(str).str.replace("\n", "<br>", regex=False)
+    if "Session" in df_org.columns:
+        df_org["Session"] = df_org["Session"].astype(str).str.replace("\n", "<br>", regex=False)
 
     html = df_org.to_html(index=False, escape=False, justify="center")
 
