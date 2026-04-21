@@ -61,21 +61,32 @@ else:
         df_org = df_org.drop(columns=["Comentario"])
 
     if "Data" in df_org.columns:
-        df_org["Data"] = pd.to_datetime(df_org["Data"], errors="coerce")
+        df_org["Data"] = pd.to_datetime(df_org["Data"], errors="coerce").dt.normalize()
+
+        hoy = datetime.date.today()
+        fin_30 = hoy + datetime.timedelta(days=30)
 
         min_fecha = df_org["Data"].min().date()
         max_fecha = df_org["Data"].max().date()
 
+        valor_inicio = max(hoy, min_fecha)
+        valor_fin = min(fin_30, max_fecha)
+
         rango_fechas = st.sidebar.date_input(
             "Filtrar por fecha",
-            value=(min_fecha, max_fecha),
+            value=(valor_inicio, valor_fin),
             min_value=min_fecha,
             max_value=max_fecha
         )
 
         if len(rango_fechas) == 2:
             inicio, fin = rango_fechas
-            df_org = df_org[df_org["Data"].between(pd.Timestamp(inicio), pd.Timestamp(fin))]
+        else:
+            inicio, fin = valor_inicio, valor_fin
+
+        df_org = df_org[
+            df_org["Data"].between(pd.Timestamp(inicio), pd.Timestamp(fin))
+        ]
 
         df_org["Data"] = df_org["Data"].dt.strftime("%d-%m")
 
