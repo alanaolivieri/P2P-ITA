@@ -11,6 +11,9 @@ st.set_page_config(
     layout = "wide"
 )
 
+if "mostrar_infografia" not in st.session_state:
+    st.session_state.mostrar_infografia = False
+
 BASE_DIR = Path(__file__).resolve().parent
 DATA_PATH = BASE_DIR.parent / "data" / "p2p_latest.xlsx"
 ORG_PATH = BASE_DIR.parent / "data" / "actividades.xlsx"
@@ -55,11 +58,26 @@ if vista == "P2P":
 
 else:
     st.title("🗓️ Organización de actividades")
-    st.image(
-        str(INFOGRAFIA_PATH),
-        caption="Haz click en la imagen para ampliarla",
-        width=250
-    )
+    if INFOGRAFIA_PATH.exists():
+        col1, col2 = st.columns([1, 5])
+
+        with col1:
+            st.image(str(INFOGRAFIA_PATH), width=180)
+
+            if st.button("Ampliar imagen"):
+                st.session_state.mostrar_infografia = True
+
+        if st.session_state.mostrar_infografia:
+            st.divider()
+            st.subheader("Infografía ampliada")
+
+            st.image(str(INFOGRAFIA_PATH), use_container_width=True)
+
+            if st.button("Cerrar imagen"):
+                st.session_state.mostrar_infografia = False
+                st.rerun()
+    else:
+        st.warning("No se encontró la infografía.")
 
     df_org = pd.read_excel(ORG_PATH)
 
